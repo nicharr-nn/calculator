@@ -15,9 +15,10 @@ class Calculator_UI:
         self.controller = controller
         self.stack = []
 
-        self.operator_list = ['*', '/', '+', '-', '^', '=', '(', ')', 'DEL', 'CLR']
+        self.operator_list = ['*', '/', '+', '-', '^', '(', ')', '=']
+        self.operator_list2 = ['mod', 'DEL', 'CLR']
         self.adv_operator_list = ['exp', 'ln', 'log2', 'log10', 'sqrt']
-        self.replace_list = self.adv_operator_list + ['^']
+        self.replace_list = ['^', 'mod', 'ln']
 
         self.init_components()
 
@@ -29,17 +30,23 @@ class Calculator_UI:
 
 
         adv_opt = ttk.Combobox(frame, values=self.adv_operator_list, textvariable=self.combo_value)
-        adv_opt.grid(row=1, column=0, padx=5, pady=5, sticky="news", columnspan=4)
+        adv_opt.grid(row=1, column=3, padx=5, pady=5, sticky="news", columnspan=4)
         adv_opt.current(0)
         adv_opt.bind('<<ComboboxSelected>>', self.cbb_text)
 
         keypad = Keypad(frame, keynames=['7', '8', '9', '4', '5', '6', '1', '2', '3', ' ', '0', '.'], columns=3)
         keypad.grid(row=2, column=0, sticky="news", columnspan=3)
         keypad.bind('<Button>', self.observer)
+        # keypad.config(background='blue')
 
         op = Keypad(frame, keynames=self.operator_list)
         op.grid(row=2, column=3, sticky="news", columnspan=1)
         op.bind('<Button>', self.observer)
+
+        op2 = Keypad(frame, keynames=self.operator_list2, columns=3)
+        op2.grid(row=1, column=0, sticky="news", columnspan=3)
+        op2.bind('<Button>', self.observer)
+        # op2.config(background='red')
 
         frame.grid_rowconfigure(0, weight=1)
         frame.grid_columnconfigure(0, weight=1)
@@ -47,6 +54,7 @@ class Calculator_UI:
             frame.grid_rowconfigure(i, weight=1)
         for i in range(4):
             frame.grid_columnconfigure(i, weight=1)
+
 
     def display_text(self, event):
         key_pressed = event.widget.cget('text')
@@ -59,16 +67,14 @@ class Calculator_UI:
         elif key_pressed == '=':
             txt = self.text_result.get()
             print(self.replace_list)
-            # Mark for loop useing slicing with index
-            for i in self.replace_list:
-                if i in txt:
-                    if i == '^':
-                        txt = txt.replace(i, '**')
-                    elif i == 'ln':
-                        txt = txt.replace(i, 'math.' + i)
-                    else:
-                        txt = txt.replace(i, 'math.' + i)
-            print(txt)
+            for operator in self.replace_list:
+                if operator in txt:
+                    if operator == '^':
+                        txt = txt.replace(operator, '**')
+                    elif operator == 'ln':
+                        txt = txt.replace(operator, 'log')
+                    elif operator == 'mod':
+                        txt = txt.replace(operator, '%')
             result = self.controller.evaluate_expression(expression=txt)
             if isinstance(result, SyntaxError):
                 self.error_msg(result)
@@ -76,13 +82,11 @@ class Calculator_UI:
                 self.text_result.set(result)
         else:
             self.text_result.set(self.text_result.get() + event.widget.cget('text'))
-            print(self.text_result.get())
 
     def get_display_text(self):
         return self.text_result.get()
 
     def observer(self, event):
-        operator = self.combo_value.get()
         self.display_text(event)
 
     def cbb_text(self, event):
