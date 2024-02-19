@@ -1,4 +1,5 @@
-"""It's view module that contains the Calculator_UI class, which displays the calculator user interface."""
+"""It's view module that contains the Calculator_UI class,
+which displays the calculator user interface."""
 import tkinter as tk
 from tkinter import ttk
 from keypad import Keypad
@@ -13,11 +14,11 @@ class Calculator_UI:
         self.tk.title("Calculator")
         self.tk.geometry("700x600")
         self.tk.resizable(True, True)
+
         self.text_result = tk.StringVar()
         self.history_var = tk.StringVar()
         self.combo_value = tk.StringVar()
         self.controller = controller
-        self.stack = []
 
         self.operator_list = ['*', '/', '+', '-', '^', '(', ')', '=']
         self.operator_list2 = ['mod', 'DEL', 'CLR']
@@ -30,10 +31,12 @@ class Calculator_UI:
         """Create the calculator interface."""
         frame = ttk.Frame(self.tk)
         frame.pack(expand=True, fill=tk.BOTH)
-        self.display_label = ttk.Label(frame, textvariable=self.text_result, anchor="e", font=('Arial', 14))
+        self.display_label = ttk.Label(frame, textvariable=self.text_result,
+                                       anchor="e", font=('Arial', 14))
         self.display_label.grid(row=1, column=0, columnspan=5, padx=10, pady=5, sticky="news")
 
-        self.history = ttk.Label(frame, textvariable=self.history_var, anchor="e", font=('Arial', 14))
+        self.history = ttk.Label(frame, textvariable=self.history_var,
+                                 anchor="e", font=('Arial', 14))
         self.history.grid(row=0, column=3, columnspan=2, padx=10, pady=5, sticky="news")
 
         self.history_list_q = []
@@ -51,10 +54,10 @@ class Calculator_UI:
         adv_opt.current(0)
         adv_opt.bind('<<ComboboxSelected>>', self.cbb_text)
 
-        keypad = Keypad(frame, keynames=['7', '8', '9', '4', '5', '6', '1', '2', '3', ' ', '0', '.'], columns=3)
+        keypad = Keypad(frame, keynames=['7', '8', '9', '4', '5', '6', '1',
+                                         '2', '3', ' ', '0', '.'], columns=3)
         keypad.grid(row=3, column=0, sticky="news", columnspan=3)
         keypad.bind('<Button>', self.observer)
-        # keypad.config(background='blue')
 
         op = Keypad(frame, keynames=self.operator_list)
         op.grid(row=3, column=3, sticky="news", columnspan=1)
@@ -98,10 +101,12 @@ class Calculator_UI:
                 self.controller.model.add_to_history(txt, result)
                 history = self.controller.model.get_history()[-1]
                 self.history_list_q.append(history[0])
-                self.history_cbb_q.config(values=self.history_list_q, textvariable=self.history_list_q[-1])
+                self.history_cbb_q.config(values=self.history_list_q,
+                                          textvariable=self.history_list_q[-1])
                 self.history_cbb_q.current(len(self.history_list_q) - 1)
                 self.history_list_a.append(history[1])
-                self.history_cbb_a.config(values=self.history_list_a, textvariable=self.history_list_a[-1])
+                self.history_cbb_a.config(values=self.history_list_a,
+                                          textvariable=self.history_list_a[-1])
                 self.history_cbb_a.current(len(self.history_list_a) - 1)
                 self.history_var.set(f"{history[0]} = {history[1]}")
                 self.text_result.set(result)
