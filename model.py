@@ -2,8 +2,8 @@
 
 
 class History:
-    def __init__(self, history):
-        self.history = history
+    def __init__(self):
+        self.history = []
 
     def get_history(self):
         return self.history
