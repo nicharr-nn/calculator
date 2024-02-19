@@ -2,11 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 
 
-# TODO Keypad should extend Frame so that it is a container
 class Keypad(tk.Frame):
 
     def __init__(self, parent, keynames=[], columns=1, **kwargs):
-        # TODO call the superclass constructor with all args except
         # keynames and columns
         super().__init__(parent, **kwargs)
         self.keynames = keynames
@@ -23,19 +21,15 @@ class Keypad(tk.Frame):
             row, col = divmod(i, columns)
             btn = ttk.Button(self, text=keyname)
             btn.grid(row=row, column=col, padx=5, pady=5, sticky="news")
-            print(row, col)
         for i in range(columns):
             self.grid_columnconfigure(i, weight=1)
         for i in range(len(self.keynames) // columns):
             self.grid_rowconfigure(i, weight=1)
 
-        self.frame.configure(background='blue')
-
     def bind(self, sequence, func, **kwargs):
         """Bind an event handler to an event sequence.
         :param **kwargs:
         """
-        # TODO Write a bind method with exactly the same parameters
         # as the bind method of Tkinter widgets.
         # Use the parameters to bind all the buttons in the keypad
         # to the same event handler.
@@ -68,10 +62,6 @@ class Keypad(tk.Frame):
         """
         self.config(cnf, **kwargs)
 
-    def handle_press(self):
-        pass
-
-    # TODO Write a property named 'frame' the returns a reference to
     # the the superclass object for this keypad.
     # This is so that a programmer can set properties of a keypad's frame,
     # e.g. keypad.frame.configure(background='blue')
