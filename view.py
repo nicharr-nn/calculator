@@ -120,7 +120,6 @@ class Calculator_UI:
                 self.text_result.set(self.combo_value.get() + '(' + self.text_result.get() + ')')
 
     def select_history(self, event):
-        print(event.widget.cget('text'))
         self.text_result.set(event.widget.get())
 
     def run(self):
