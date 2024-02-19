@@ -1,4 +1,4 @@
 # Calculator
 
 ### UML Diagram
-![uml class diagram](./uml.png)g
+![uml class diagram](./uml.png)
