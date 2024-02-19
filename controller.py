@@ -11,7 +11,8 @@ class Calculator:
         self.model = History()
 
     def evaluate_expression(self, expression: str):
-        """Calculate and return the result of the expression. Also add the expression and result to the history."""
+        """Calculate and return the result of the expression.
+        Also add the expression and result to the history."""
         try:
             result = eval(expression)
             self.model.add_to_history(expression, result)
