@@ -1,9 +1,10 @@
+"""keypad widget."""
 import tkinter as tk
 from tkinter import ttk
 
 
 class Keypad(tk.Frame):
-
+    """A keypad widget for a calculator."""
     def __init__(self, parent, keynames=[], columns=1, **kwargs):
         # keynames and columns
         super().__init__(parent, **kwargs)
