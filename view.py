@@ -79,8 +79,20 @@ class Calculator_UI:
         self.display_label.config(foreground='black')
         key_pressed = event.widget.cget('text')
         if key_pressed == 'DEL':
-            current_text = self.text_result.get()
-            self.text_result.set(current_text[:-1])
+            if self.text_result.get()[-1] == ')':
+                space = ''
+                open_paren = False
+                close_paren = False
+                for i in reversed(self.text_result.get()):
+                    if i == ')':
+                        close_paren = True
+                    if i == '(':
+                        open_paren = True
+                    if close_paren and not open_paren and i != '(' and i != ')':
+                        space = i + space
+                self.text_result.set(space)
+            else:
+                self.text_result.set(self.text_result.get()[:-1])
         elif key_pressed == 'CLR':
             self.text_result.set("")
         elif key_pressed == '=':
