@@ -1,8 +1,7 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk
 from keypad import Keypad
 from controller import Calculator
-from model import History
 
 
 class Calculator_UI:
@@ -15,7 +14,6 @@ class Calculator_UI:
         self.history_var = tk.StringVar()
         self.combo_value = tk.StringVar()
         self.controller = controller
-        self.model = History()
         self.stack = []
 
         self.operator_list = ['*', '/', '+', '-', '^', '(', ')', '=']
@@ -32,7 +30,17 @@ class Calculator_UI:
         self.display_label.grid(row=1, column=0, columnspan=5, padx=10, pady=5, sticky="news")
 
         self.history = ttk.Label(frame, textvariable=self.history_var, anchor="e", font=('Arial', 14))
-        self.history.grid(row=0, column=0, columnspan=5, padx=10, pady=5, sticky="news")
+        self.history.grid(row=0, column=3, columnspan=2, padx=10, pady=5, sticky="news")
+
+        self.history_list_q = []
+        self.history_cbb_q = ttk.Combobox(frame, values=self.history_list_q, state='readonly')
+        self.history_cbb_q.grid(row=0, column=0, columnspan=2, padx=10, pady=5, sticky="news")
+        self.history_cbb_q.bind('<<ComboboxSelected>>', self.select_history)
+
+        self.history_list_a = []
+        self.history_cbb_a = ttk.Combobox(frame, values=self.history_list_a, state='readonly')
+        self.history_cbb_a.grid(row=0, column=2, columnspan=1, padx=10, pady=5, sticky="news")
+        self.history_cbb_a.bind('<<ComboboxSelected>>', self.select_history)
 
         adv_opt = ttk.Combobox(frame, values=self.adv_operator_list, textvariable=self.combo_value)
         adv_opt.grid(row=2, column=3, padx=5, pady=5, sticky="news", columnspan=4)
@@ -51,7 +59,6 @@ class Calculator_UI:
         op2 = Keypad(frame, keynames=self.operator_list2, columns=3)
         op2.grid(row=2, column=0, sticky="news", columnspan=3)
         op2.bind('<Button>', self.observer)
-        # op2.config(background='red')
 
         frame.grid_rowconfigure(0, weight=1)
         frame.grid_columnconfigure(0, weight=1)
@@ -83,8 +90,14 @@ class Calculator_UI:
                 self.display_label.config(foreground='red')
                 tk.Tk.bell(self.tk)
             else:
-                self.model.history.append((txt, result))
-                history = self.model.history[-1]
+                self.controller.model.add_to_history(txt, result)
+                history = self.controller.model.get_history()[-1]
+                self.history_list_q.append(history[0])
+                self.history_cbb_q.config(values=self.history_list_q, textvariable=self.history_list_q[-1])
+                self.history_cbb_q.current(len(self.history_list_q) - 1)
+                self.history_list_a.append(history[1])
+                self.history_cbb_a.config(values=self.history_list_a, textvariable=self.history_list_a[-1])
+                self.history_cbb_a.current(len(self.history_list_a) - 1)
                 self.history_var.set(f"{history[0]} = {history[1]}")
                 self.text_result.set(result)
         else:
@@ -105,6 +118,10 @@ class Calculator_UI:
                 self.text_result.set(self.text_result.get() + self.combo_value.get() + '(')
             else:
                 self.text_result.set(self.combo_value.get() + '(' + self.text_result.get() + ')')
+
+    def select_history(self, event):
+        print(event.widget.cget('text'))
+        self.text_result.set(event.widget.get())
 
     def run(self):
         self.tk.mainloop()
