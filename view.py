@@ -12,7 +12,7 @@ class Calculator_UI:
         """Create a new instance of the Calculator_UI class."""
         self.tk = tk.Tk()
         self.tk.title("Calculator")
-        self.tk.geometry("700x600")
+        self.tk.geometry("700x500")
         self.tk.resizable(True, True)
 
         self.text_result = tk.StringVar()
@@ -110,6 +110,8 @@ class Calculator_UI:
                 self.history_cbb_a.current(len(self.history_list_a) - 1)
                 self.history_var.set(f"{history[0]} = {history[1]}")
                 self.text_result.set(result)
+        elif key_pressed == ' ':
+            pass
         else:
             self.text_result.set(self.text_result.get() + event.widget.cget('text'))
 
