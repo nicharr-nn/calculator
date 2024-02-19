@@ -13,4 +13,11 @@ class History:
 
     def add_to_history(self, expression, result):
         """Add an expression and result to the history."""
+        if '**' in expression:
+            expression = expression.replace('**', '^')
+        if 'log' in expression:
+            expression = expression.replace('log', 'ln')
+        if '%' in expression:
+            expression = expression.replace('%', 'mod')
+
         self.history.append((expression, result))
