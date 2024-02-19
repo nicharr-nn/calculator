@@ -1,5 +1,5 @@
 from model import History
-import math
+from math import *
 # from view import Calculator_UI
 
 
