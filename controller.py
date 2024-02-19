@@ -11,10 +11,6 @@ class Calculator:
     def evaluate_expression(self, expression: str):
         try:
             result = eval(expression)
-            self.save_model()
             return result
         except Exception as e:
             return e
-
-    def save_model(self):
-        pass
