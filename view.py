@@ -63,7 +63,6 @@ class Calculator_UI:
     def display_text(self, event):
         self.display_label.config(foreground='black')
         key_pressed = event.widget.cget('text')
-        # print('key', self.text_result.get())
         if key_pressed == 'DEL':
             current_text = self.text_result.get()
             self.text_result.set(current_text[:-1])
@@ -71,7 +70,6 @@ class Calculator_UI:
             self.text_result.set("")
         elif key_pressed == '=':
             txt = self.text_result.get()
-            print(self.replace_list)
             for operator in self.replace_list:
                 if operator in txt:
                     if operator == '^':
@@ -81,13 +79,13 @@ class Calculator_UI:
                     elif operator == 'mod':
                         txt = txt.replace(operator, '%')
             result = self.controller.evaluate_expression(expression=txt)
-            self.model.history.append((txt, result))
-            history = self.model.history[-1]
-            self.history_var.set(f"{history[0]} = {history[1]}")
-            print(self.model.history[-1])
             if isinstance(result, SyntaxError):
-                self.error_msg(result)
+                self.display_label.config(foreground='red')
+                tk.Tk.bell(self.tk)
             else:
+                self.model.history.append((txt, result))
+                history = self.model.history[-1]
+                self.history_var.set(f"{history[0]} = {history[1]}")
                 self.text_result.set(result)
         else:
             self.text_result.set(self.text_result.get() + event.widget.cget('text'))
@@ -100,7 +98,6 @@ class Calculator_UI:
 
     def cbb_text(self, event):
         operator = self.combo_value.get()
-        print('op', operator)
         if self.text_result.get() == "":
             self.text_result.set(self.combo_value.get() + '(')
         else:
@@ -109,17 +106,5 @@ class Calculator_UI:
             else:
                 self.text_result.set(self.combo_value.get() + '(' + self.text_result.get() + ')')
 
-    def error_msg(self, result):
-        tk.messagebox.showerror("Error Message", result)
-        self.display_label.config(foreground='red')
-
-    def history(self):
-        pass
-
     def run(self):
         self.tk.mainloop()
-
-
-# if __name__ == '__main__':
-#     ui = Calculator_UI()
-#     ui.run()
