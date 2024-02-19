@@ -1,3 +1,4 @@
+"""It's view module that contains the Calculator_UI class, which displays the calculator user interface."""
 import tkinter as tk
 from tkinter import ttk
 from keypad import Keypad
@@ -5,7 +6,9 @@ from controller import Calculator
 
 
 class Calculator_UI:
+    """Display the calculator user interface."""
     def __init__(self, controller: Calculator()):
+        """Create a new instance of the Calculator_UI class."""
         self.tk = tk.Tk()
         self.tk.title("Calculator")
         self.tk.geometry("700x600")
@@ -24,6 +27,7 @@ class Calculator_UI:
         self.init_components()
 
     def init_components(self):
+        """Create the calculator interface."""
         frame = ttk.Frame(self.tk)
         frame.pack(expand=True, fill=tk.BOTH)
         self.display_label = ttk.Label(frame, textvariable=self.text_result, anchor="e", font=('Arial', 14))
@@ -68,6 +72,7 @@ class Calculator_UI:
             frame.grid_columnconfigure(i, weight=1)
 
     def display_text(self, event):
+        """Display the text on the calculator."""
         self.display_label.config(foreground='black')
         key_pressed = event.widget.cget('text')
         if key_pressed == 'DEL':
@@ -104,13 +109,15 @@ class Calculator_UI:
             self.text_result.set(self.text_result.get() + event.widget.cget('text'))
 
     def get_display_text(self):
+        """Return the text displayed on the calculator."""
         return self.text_result.get()
 
     def observer(self, event):
+        """Handle the event when a button is clicked."""
         self.display_text(event)
 
     def cbb_text(self, event):
-        operator = self.combo_value.get()
+        """Add the advanced operator to the expression."""
         if self.text_result.get() == "":
             self.text_result.set(self.combo_value.get() + '(')
         else:
@@ -120,7 +127,9 @@ class Calculator_UI:
                 self.text_result.set(self.combo_value.get() + '(' + self.text_result.get() + ')')
 
     def select_history(self, event):
+        """Select the history from the combobox."""
         self.text_result.set(event.widget.get())
 
     def run(self):
+        """Display the calculator user interface."""
         self.tk.mainloop()
